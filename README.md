@@ -1,4 +1,4 @@
-# MyInvest
+# SunnyDay
 
 This is my pet project, about investments.  To repeat/investigation the following technologies:
  * FastAPI 
