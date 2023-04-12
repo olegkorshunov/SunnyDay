@@ -9,10 +9,12 @@ from alembic import context
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "src"))
 
+
 # isort: off
 from src.config import settings  # noqa
 from src.database import Base  # noqa
 from src.auth.models import User  # noqa
+from src.hotels.models import Hotel  # noqa
 
 # isort: onn
 # this is the Alembic Config object, which provides
