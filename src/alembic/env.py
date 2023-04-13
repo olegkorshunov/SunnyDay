@@ -14,7 +14,9 @@ sys.path.append(os.path.join(BASE_DIR, "src"))
 from src.config import settings  # noqa
 from src.database import Base  # noqa
 from src.auth.models import User  # noqa
-from src.hotels.models import Hotel  # noqa
+from src.booking.models import Booking  # noqa
+from src.hotel.models import Hotel  # noqa
+from src.hotel.room.models import Room  # noqa
 
 # isort: onn
 # this is the Alembic Config object, which provides
