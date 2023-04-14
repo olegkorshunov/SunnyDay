@@ -14,5 +14,5 @@ class Room(Base):
     quantity: Mapped[int] = mapped_column(Integer)
     hotel_id: Mapped[int] = mapped_column(ForeignKey("hotel.id"))
     image_id: Mapped[int] = mapped_column(Integer)
-    hotel: Mapped["hotel"] = relationship(back_populates="room")
-    booking: Mapped["booking"] = relationship(back_populates="room")
+    hotel: Mapped["Hotel"] = relationship(back_populates="room")
+    booking: Mapped["Booking"] = relationship(back_populates="room")

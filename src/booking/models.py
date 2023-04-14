@@ -16,5 +16,5 @@ class Booking(Base):
     price: Mapped[int] = mapped_column(Integer)
     total_cost: Mapped[int] = mapped_column(Integer, Computed("(date_from - date_to) * price"))
     total_days: Mapped[int] = mapped_column(Integer, Computed("date_from - date_to"))
-    room: Mapped["room"] = relationship(back_populates="booking")
-    user_account: Mapped["user_account"] = relationship(back_populates="booking")
+    room: Mapped["Room"] = relationship(back_populates="booking")
+    user_account: Mapped["UserAccount"] = relationship(back_populates="booking")

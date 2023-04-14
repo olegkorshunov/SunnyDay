@@ -14,4 +14,4 @@ class Hotel(Base):
     services: Mapped[dict[str, list]] = mapped_column(JSON)
     rooms_quantity: Mapped[int] = mapped_column(Integer)
     image_id: Mapped[int] = mapped_column(Integer)
-    room: Mapped[List["room"]] = relationship(back_populates="hotel")
+    room: Mapped[List["Room"]] = relationship(back_populates="hotel")
