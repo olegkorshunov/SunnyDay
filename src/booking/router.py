@@ -13,4 +13,4 @@ router = APIRouter(
 
 @router.get("/")
 async def get() -> List[SBooking]:
-    return await BookingDao.get_all()
+    return await BookingDao.find_all()
