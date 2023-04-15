@@ -12,8 +12,6 @@ class SBooking(BaseModel):
     price: int
     total_cost: int
     total_days: int
-    room: int
-    user_account: int
 
     class Config:
         orm_mode = True
