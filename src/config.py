@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: str
 
-    SECRET_AUTH: str
-    TOKEN_SECRET: str
+    SECRET_KEY_jwt: str
+    ALGORITHM: str
 
     @property
     def DATABASE_URL(self):
