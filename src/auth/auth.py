@@ -1,19 +1,11 @@
-from fastapi_users.authentication import AuthenticationBackend, CookieTransport, JWTStrategy
+from passlib.context import CryptContext
 
-from src.config import settings
-
-cookie_transport = CookieTransport(
-    cookie_max_age=3600,
-    cookie_name="MyInvest",
-)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=settings.SECRET_AUTH, lifetime_seconds=3600)
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
 
 
-auth_backend = AuthenticationBackend(
-    name="jwt",
-    transport=cookie_transport,
-    get_strategy=get_jwt_strategy,
-)
+def get_password_hash(password):
+    return pwd_context.hash(password)

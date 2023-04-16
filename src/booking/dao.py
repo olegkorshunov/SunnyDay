@@ -1,6 +1,6 @@
 from src.booking.models import Booking
-from src.dao.daobase import BookingDaoBase
+from src.dao.daobase import DaoBase
 
 
-class BookingDao(BookingDaoBase):
+class BookingDao(DaoBase):
     model = Booking
