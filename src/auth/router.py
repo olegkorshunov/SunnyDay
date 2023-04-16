@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 
-from src.auth.auth import get_password_hash
+from src.auth.auth import authenticate_user, create_access_token, get_password_hash
 from src.auth.dao import DaoAuth
-from src.auth.schemas import SUserRegister
+from src.auth.schemas import SUserAuth, SUserRegister
 
 router = APIRouter(
     prefix="/auth",
@@ -17,3 +17,11 @@ async def register_user(user_data: SUserRegister):
         raise HTTPException(status_code=500)
     hashed_password = get_password_hash(password=user_data.password)
     await DaoAuth.insert(email=user_data.email, hashed_password=hashed_password)
+
+
+@router.post("/login")
+async def login_user(response: Response, user_data: SUserAuth):
+    user: SUserRegister = await authenticate_user(user_data.email, user_data.password)
+    access_token = create_access_token({"sub": user.id})
+    response.set_cookie("booking_access_token", access_token)
+    return access_token
