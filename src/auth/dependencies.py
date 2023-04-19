@@ -3,9 +3,9 @@ from datetime import datetime
 from fastapi import Depends, HTTPException, Request, status
 from jose import JWTError, jwt
 
+from src.auth.constants import access_token
 from src.auth.dao import DaoAuth
 from src.config import settings
-from src.auth.constants import access_token
 
 
 def get_access_token(request: Request):
