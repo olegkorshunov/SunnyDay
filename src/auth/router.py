@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Response
 
 from src.auth.auth import authenticate_user, create_access_token, get_password_hash
+from src.auth.constants import access_token
 from src.auth.dao import DaoAuth
 from src.auth.schemas import SUserAuth, SUserRegister
 
@@ -22,6 +23,6 @@ async def register_user(user_data: SUserRegister):
 @router.post("/login")
 async def login_user(response: Response, user_data: SUserAuth):
     user: SUserRegister = await authenticate_user(user_data.email, user_data.password)
-    access_token = create_access_token({"sub": user.id})
-    response.set_cookie("booking_access_token", access_token)
+    access_token_jwt = create_access_token({"sub": str(user.id)})
+    response.set_cookie(access_token, access_token_jwt)
     return access_token
