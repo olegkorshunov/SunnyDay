@@ -26,3 +26,8 @@ async def login_user(response: Response, user_data: SUserAuth):
     access_token_jwt = create_access_token({"sub": str(user.id)})
     response.set_cookie(access_token, access_token_jwt)
     return access_token
+
+
+@router.post("/logout")
+async def logout_user(response: Response):
+    response.delete_cookie(access_token)
