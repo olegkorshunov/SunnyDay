@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 
-from fastapi import HTTPException
 from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
 from src.auth.dao import DaoAuth
 from src.config import settings
+from src.exceptions import HttpException
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -32,6 +32,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 async def authenticate_user(email: EmailStr, password: str):
     user = await DaoAuth.find_one_or_none(email=email)
-    if not (user and verify_password(password, user.hashed_password)):
-        raise HTTPException(status_code=500)
-    return user
+    if user and verify_password(password, user.hashed_password):
+        return user
+    else:
+        raise HttpException.IncorrectEmailOrPassword
