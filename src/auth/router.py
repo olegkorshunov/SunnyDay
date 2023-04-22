@@ -4,7 +4,7 @@ from src.auth.auth import authenticate_user, create_access_token, get_password_h
 from src.auth.constants import access_token
 from src.auth.dao import DaoAuth
 from src.auth.dependencies import get_current_user
-from src.auth.schemas import SUserInfo, SUserRegister
+from src.auth.schemas import SUserInfo, SUserLogin, SUserRegister
 from src.exceptions import HttpException
 
 router = APIRouter(
@@ -23,7 +23,7 @@ async def register_user(user_data: SUserRegister):
 
 
 @router.post("/login")
-async def login_user(response: Response, user_data: SUserRegister):
+async def login_user(response: Response, user_data: SUserLogin):
     user: SUserInfo = await authenticate_user(user_data.email, user_data.password)
     access_token_jwt = create_access_token({"sub": str(user.id)})
     response.set_cookie(access_token, access_token_jwt)
