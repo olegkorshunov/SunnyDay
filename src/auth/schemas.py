@@ -8,6 +8,10 @@ class SBaseUser(BaseModel):
         orm_mode = True
 
 
+class SUserLogin(SBaseUser):
+    password: str
+
+
 class SUserRegister(SBaseUser):
     id: int
     password: str
