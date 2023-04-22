@@ -14,6 +14,9 @@ line_length = 120
 [tool.autoflake]
 check = true
 
+[tool.pyright]
+include = ["src"]
+
 [tool.poetry]
 name = "sunnyday"
 version = "0.1.0"
