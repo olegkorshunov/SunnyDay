@@ -10,8 +10,8 @@ from src.booking.schemas import SBooking
 from src.exceptions import HttpException
 
 router = APIRouter(
-    prefix="/boocking",
-    tags=["Booking"],
+    prefix="/boockings",
+    tags=["Bookings"],
 )
 
 
