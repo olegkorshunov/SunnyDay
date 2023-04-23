@@ -32,15 +32,15 @@ class DaoBase:
     @classmethod
     async def insert(cls, **data):
         async with async_session_maker() as session:
-            query = insert(cls.model).values(**data).returning(cls.model.id)
+            query = insert(cls.model).values(**data).returning(cls.model.id)  # type: ignore
             result = await session.execute(query)
             await session.commit()
-            return result
+            return result.scalar()
 
     @classmethod
     async def delete(cls, **filter_by):
         async with async_session_maker() as session:
-            stmt = delete(cls.model).where(**filter_by).returning(cls.model)
+            stmt = delete(cls.model).filter_by(**filter_by).returning(cls.model)
             result = await session.execute(stmt)
             result = result.scalar()
             await session.commit()
