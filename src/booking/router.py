@@ -15,18 +15,24 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("")
 async def get(user: UserAccount = Depends(get_current_user)) -> List[SBooking]:
     return await BookingDao.find_all(id=user.id)  # type: ignore
 
 
-@router.post("/")
+@router.post("")
 async def add(
     room_id: int,
     date_from: date,
     date_to: date,
     user: UserAccount = Depends(get_current_user),
-):
-    booking = await BookingDao.add(user.id, room_id, date_from, date_to)
+) -> SBooking:
+    booking = await BookingDao.add(user.id, room_id, date_from, date_to)  # type: ignore
     if not booking:
         raise HttpException.RoomCanNotBeBooked
+    return booking
+
+
+@router.delete("")
+async def delete(room_id: int, user: UserAccount = Depends(get_current_user)) -> SBooking:
+    return await BookingDao.delete(room_id=room_id, user_account_id=user.id)  # type: ignore
