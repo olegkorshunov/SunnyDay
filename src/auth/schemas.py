@@ -13,7 +13,6 @@ class SUserLogin(SBaseUser):
 
 
 class SUserRegister(SBaseUser):
-    id: int
     password: str
 
 
