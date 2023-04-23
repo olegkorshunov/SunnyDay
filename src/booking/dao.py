@@ -75,6 +75,6 @@ class BookingDao(DaoBase):
                 )
                 new_booking = await sessesion.execute(add_booking_stmt)
                 await sessesion.commit()
-                new_booking = new_booking.scalars()
+                new_booking = new_booking.scalar()
                 return new_booking
         return room_is_free
