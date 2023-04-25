@@ -1,8 +1,8 @@
-"""init DB
+"""init db
 
-Revision ID: 9265b1343061
+Revision ID: 68cad3e4e6cd
 Revises: 
-Create Date: 2023-04-14 18:44:37.315229
+Create Date: 2023-04-25 21:03:22.390660
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "9265b1343061"
+revision = "68cad3e4e6cd"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -63,7 +63,7 @@ def upgrade() -> None:
             "total_cost",
             sa.Integer(),
             sa.Computed(
-                "(date_from - date_to) * price",
+                "(date_to - date_from) * price",
             ),
             nullable=False,
         ),
@@ -71,7 +71,7 @@ def upgrade() -> None:
             "total_days",
             sa.Integer(),
             sa.Computed(
-                "date_from - date_to",
+                "date_to - date_from",
             ),
             nullable=False,
         ),
