@@ -26,22 +26,21 @@ class DaoBase:
     async def find_all(cls, **filter_by):
         async with async_session_maker() as session:
             query = select(cls.model).filter_by(**filter_by)
-            result = await session.execute(query)
-            return result.scalars().all()
+            result = await session.scalars(query)
+            return result.all()
 
     @classmethod
     async def insert(cls, **data):
         async with async_session_maker() as session:
-            query = insert(cls.model).values(**data).returning(cls.model.id)  # type: ignore
-            result = await session.execute(query)
+            query = insert(cls.model).values(**data).returning(cls.model)
+            result = await session.scalar(query)
             await session.commit()
-            return result.scalar()
+            return result
 
     @classmethod
     async def delete(cls, **filter_by):
         async with async_session_maker() as session:
             stmt = delete(cls.model).filter_by(**filter_by).returning(cls.model)
-            result = await session.execute(stmt)
-            result = result.scalar()
+            result = await session.scalar(stmt)
             await session.commit()
             return result

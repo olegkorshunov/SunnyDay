@@ -60,8 +60,7 @@ class BookingDao(DaoBase):
             room_is_free: int | None = result.scalar()
             if room_is_free:
                 get_price = select(Room.price).filter_by(id=room_id)
-                result = await sessesion.execute(get_price)
-                price: int | None = result.scalar()
+                price: int | None = await sessesion.scalar(get_price)
                 add_booking_stmt = (
                     insert(Booking)
                     .values(
@@ -73,8 +72,7 @@ class BookingDao(DaoBase):
                     )
                     .returning(Booking)
                 )
-                new_booking = await sessesion.execute(add_booking_stmt)
+                new_booking = await sessesion.scalar(add_booking_stmt)
                 await sessesion.commit()
-                new_booking = new_booking.scalar()
                 return new_booking
         return room_is_free
