@@ -47,7 +47,7 @@ class BookingDao(DaoBase):
             )
             .cte("booked_room")
         )
-
+        # counting numbers of free rooms
         room_query = (
             select(Room.quantity - func.count(booked_room_query.c.room_id).label("room_left"))
             .select_from(Room)
@@ -56,8 +56,7 @@ class BookingDao(DaoBase):
         ).group_by(Room.quantity, booked_room_query.c.room_id)
 
         async with async_session_maker() as sessesion:
-            result = await sessesion.execute(room_query)
-            room_is_free: int | None = result.scalar()
+            room_is_free: int | None = await sessesion.scalar(room_query)
             if room_is_free:
                 get_price = select(Room.price).filter_by(id=room_id)
                 price: int | None = await sessesion.scalar(get_price)
