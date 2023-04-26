@@ -1,5 +1,4 @@
 from datetime import date
-from typing import List
 
 from fastapi import APIRouter, Depends
 
@@ -15,24 +14,24 @@ router = APIRouter(
 )
 
 
-@router.get("")
-async def get(user: UserAccount = Depends(get_current_user)) -> List[SBooking]:
-    return await BookingDao.find_all(user_account_id=user.id)  # type: ignore
+@router.get(path="", response_model=list[SBooking])
+async def get(user: UserAccount = Depends(get_current_user)):
+    return await BookingDao.find_all(user_account_id=user.id)
 
 
-@router.post("")
+@router.post(path="", response_model=SBooking)
 async def add(
     room_id: int,
     date_from: date,
     date_to: date,
     user: UserAccount = Depends(get_current_user),
-) -> SBooking | None:
-    booking = await BookingDao.add(user.id, room_id, date_from, date_to)  # type: ignore
+):
+    booking = await BookingDao.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise HttpException.RoomCanNotBeBooked
-    return booking  # type: ignore
+    return booking
 
 
-@router.delete("")
-async def delete(room_id: int, user: UserAccount = Depends(get_current_user)) -> SBooking | None:
-    return await BookingDao.delete(room_id=room_id, user_account_id=user.id)  # type: ignore
+@router.delete(path="", response_model=SBooking)
+async def delete(room_id: int, user: UserAccount = Depends(get_current_user)):
+    return await BookingDao.delete(room_id=room_id, user_account_id=user.id)

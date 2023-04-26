@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 
 from sqlalchemy import func, insert, select
 
@@ -8,11 +9,11 @@ from src.database import async_session_maker
 from src.hotel.room.models import Room
 
 
-class BookingDao(DaoBase):
+class BookingDao(DaoBase[Booking]):
     model = Booking
 
     @classmethod
-    async def add(cls, user_id: int, room_id: int, date_from: date, date_to: date):
+    async def add(cls, user_id: int, room_id: int, date_from: date, date_to: date) -> Optional[Booking]:
         """
         example:
         -- date_from = '2023-05-15'
@@ -74,4 +75,3 @@ class BookingDao(DaoBase):
                 new_booking = await sessesion.scalar(add_booking_stmt)
                 await sessesion.commit()
                 return new_booking
-        return room_is_free
