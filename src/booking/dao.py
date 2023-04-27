@@ -40,7 +40,7 @@ class BookingDao(DaoBase[Booking]):
         booked_room_query = (
             select(Booking)
             .where(
-                (Booking.room_id == 1)
+                (Booking.room_id == room_id)
                 & (
                     (date_from <= Booking.date_from) & (date_from <= Booking.date_to)
                     | ((date_to <= Booking.date_from) & (date_to <= Booking.date_to))
@@ -58,6 +58,7 @@ class BookingDao(DaoBase[Booking]):
 
         async with async_session_maker() as sessesion:
             room_is_free: int | None = await sessesion.scalar(room_query)
+            print(room_is_free)
             if room_is_free:
                 get_price = select(Room.price).filter_by(id=room_id)
                 price: int | None = await sessesion.scalar(get_price)
