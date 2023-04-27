@@ -58,7 +58,6 @@ class BookingDao(DaoBase[Booking]):
 
         async with async_session_maker() as sessesion:
             room_is_free: int | None = await sessesion.scalar(room_query)
-            print(room_is_free)
             if room_is_free:
                 get_price = select(Room.price).filter_by(id=room_id)
                 price: int | None = await sessesion.scalar(get_price)
