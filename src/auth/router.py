@@ -24,7 +24,7 @@ async def register_user(user_data: SUserRegister):
 
 @router.post("/login")
 async def login_user(response: Response, user_data: SUserLogin):
-    user: SUserInfo = await authenticate_user(user_data.email, user_data.password)
+    user = await authenticate_user(user_data.email, user_data.password)
     access_token_jwt = create_access_token({"sub": str(user.id)})
     response.set_cookie(access_token, access_token_jwt)
     return access_token
