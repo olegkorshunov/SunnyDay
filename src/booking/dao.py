@@ -51,7 +51,6 @@ class BookingDao(DaoBase[Booking]):
         # counting numbers of free rooms
         room_query = (
             select(Room.quantity - func.count(booked_room_query.c.room_id).label("room_left"))
-            .select_from(Room)
             .join(booked_room_query, booked_room_query.c.room_id == Room.id, isouter=True)
             .where(Room.id == room_id)
         ).group_by(Room.quantity, booked_room_query.c.room_id)
