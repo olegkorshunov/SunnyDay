@@ -24,5 +24,5 @@ INSERT INTO user_account (email, hashed_password) VALUES
 ('user2_pass_abc_@gmail.com', '$2b$12$vx6ARKBSwLpnSC0sD3GMPOhHeNFsq5EsGvOZF7Fk1kW7dhvwX41tm'); -- password: abc
 
 INSERT INTO booking (room_id, user_account_id, date_from, date_to, price) VALUES
-(1, 1, '2023-06-15', '2023-06-30', 3675),
-(7, 2, '2023-06-25', '2023-07-10', 645);
+(1, 1, '2023-06-15', '2023-06-30', 245),
+(7, 2, '2023-06-25', '2023-07-10', 43);
