@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import func, select, text
+from sqlalchemy import func, select
 
 from src.dao.daobase import DaoBase
 from src.database import async_session_maker
