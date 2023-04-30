@@ -32,6 +32,6 @@ async def add(
     return booking
 
 
-@router.delete(path="", response_model=SBooking)
+@router.delete(path="", response_model=SBooking | None)
 async def delete(room_id: int, user: UserAccount = Depends(get_current_user)):
     return await BookingDao.delete(room_id=room_id, user_account_id=user.id)
