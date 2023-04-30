@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 
 from src.dao.daobase import DaoBase
 from src.database import async_session_maker
@@ -31,16 +31,15 @@ class DaoHotel(DaoBase[Hotel]):
                         OR ( '2023-05-15' <= date_to
                             AND date_to <= '2023-06-20' )
                 GROUP  BY r.hotel_id)
-        SELECT *
+        SELECT h.*,
+            ( h.rooms_quantity - COALESCE(n.number_of_boocked_room, 0) ) AS room_left
         FROM   hotel_by_location AS h
             LEFT JOIN number_of_boocked_room AS n
                     ON h.id = n.hotel_id
-        WHERE  ( h.rooms_quantity - COALESCE(n.number_of_boocked_room, 0) > 0 )
+        WHERE  h.rooms_quantity - COALESCE(n.number_of_boocked_room, 0) > 0
         """
-        hotel_by_location = (
-            select(Hotel).where(func.lower(Hotel.location).like(f"%{location}%")).cte("hotel_by_location")
-        )
-        number_of_boocked_room = (
+        h = select(Hotel).where(func.lower(Hotel.location).like(f"%{location}%")).cte("hotel_by_location")
+        n = (
             (
                 select(Room.hotel_id.label("hotel_id"), func.count(Room.hotel_id).label("number_of_boocked_room"))
                 .outerjoin(Booking, Booking.room_id == Room.id)
@@ -53,10 +52,12 @@ class DaoHotel(DaoBase[Hotel]):
             .cte("number_of_boocked_room")
         )
 
-        hotels_with_available_rooms = select(hotel_by_location).outerjoin(
-            number_of_boocked_room, hotel_by_location.c.id == number_of_boocked_room.c.hotel_id
+        hotels_with_available_rooms = (
+            select(h, (h.c.rooms_quantity - func.coalesce(n.c.number_of_boocked_room, 0)).label("rooms_left"))
+            .outerjoin(n, h.c.id == n.c.hotel_id)
+            .where((h.c.rooms_quantity - func.coalesce(n.c.number_of_boocked_room, 0) > 0))
         )
         async with async_session_maker() as ssesion:
             hotels_with_available_rooms = await ssesion.execute(hotels_with_available_rooms)
-            result = [r._asdict() for r in hotels_with_available_rooms]
+            result = hotels_with_available_rooms.mappings().all()
             return result
