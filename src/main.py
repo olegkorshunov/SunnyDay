@@ -6,12 +6,13 @@ from src.auth.router import router as auth_router
 from src.booking.router import router as booking_router
 from src.hotel.room.router import router as room_router  # noqa
 from src.hotel.router import router as hotel_router
+from src.pages.router import router as router_pages
 
 app = FastAPI()
-
 
 app.include_router(booking_router)
 app.include_router(auth_router)
 app.include_router(hotel_router)
+app.include_router(router_pages)
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
