@@ -2,12 +2,11 @@ from datetime import date
 
 from sqlalchemy import func, select
 
+from src.booking.models import Booking
 from src.dao.daobase import DaoBase
 from src.database import async_session_maker
 from src.hotel.models import Hotel
-
-from ..booking.models import Booking
-from .room.models import Room
+from src.hotel.room.models import Room
 
 
 class DaoHotel(DaoBase[Hotel]):
