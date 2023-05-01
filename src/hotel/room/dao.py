@@ -57,7 +57,7 @@ class DaoRoom(DaoBase[Room]):
             select(
                 hotel_rooms,
                 booking_rooms,
-                (func.Date_part("day", date_to - date_from) * hotel_rooms.c.price).label("total_price"),
+                (func.Date_part("day", date_to - date_from) * hotel_rooms.c.price).label("total_cost"),
                 (hotel_rooms.c.quantity - booking_rooms.c.booking).label("rooms_left"),
             )
             .join(booking_rooms, booking_rooms.c.room_id == hotel_rooms.c.id, isouter=True)
