@@ -14,8 +14,10 @@ class DaoHotel(DaoBase[Hotel]):
     model = Hotel
 
     @classmethod
-    async def get_hotels_with_available_rooms(cls, location: str, date_from: date, date_to: date):
+    async def find_all(cls, location: str, date_from: date, date_to: date):
         """
+        Search for all hotels with unbooked rooms.
+
         WITH hotel_by_location
             AS (SELECT *
                 FROM   hotel
