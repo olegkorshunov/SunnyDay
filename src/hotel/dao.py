@@ -39,7 +39,7 @@ class DaoHotel(DaoBase[Hotel]):
                     ON h.id = n.hotel_id
         WHERE  h.rooms_quantity - COALESCE(n.number_of_boocked_room, 0) > 0
         """
-        h = select(Hotel).where(func.lower(Hotel.location).like(f"%{location}%")).cte("hotel_by_location")
+        h = select(Hotel).where(func.lower(Hotel.location).like(f"%{location.lower()}%")).cte("hotel_by_location")
         n = (
             (
                 select(Room.hotel_id.label("hotel_id"), func.count(Room.hotel_id).label("number_of_boocked_room"))
