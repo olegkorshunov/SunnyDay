@@ -30,7 +30,7 @@
         <div class="flex flex-col items-center">
             {% for room in rooms %}
                 <div class="flex shadow-md mb-5 pr-4 items-center">
-                    <img src="{{ url_for('static', path='static/images/' + room.image_id|string + '.webp') }}" alt="Номер" width="300">
+                    <img src="{{ url_for('static', path='static/images/' + room.image_id|string + '.webp') }}" alt="Room" width="300">
                     <div class="flex items-center">
                         <div class="px-4 py-3 w-[25rem]">
                             <div class="pl-1 font-bold">{{ room.name }}</div>
