@@ -9,7 +9,7 @@ from src.database import async_session_maker
 from src.hotel.room.models import Room
 
 
-class BookingDao(DaoBase[Booking]):
+class DaoBooking(DaoBase[Booking]):
     model = Booking
 
     @classmethod
@@ -74,3 +74,20 @@ class BookingDao(DaoBase[Booking]):
                 new_booking = await sessesion.scalar(add_booking_stmt)
                 await sessesion.commit()
                 return new_booking
+
+    @classmethod
+    async def get_booking_with_image(cls, user_account_id: int):
+        """
+        SELECT b.*,Щ
+            r.image_id
+        FROM   booking AS b
+            LEFT JOIN room AS r
+            ON b.room_id = r.id
+        """
+
+        query = select(Booking.__table__.columns, Room.image_id.label("image_id")).join(
+            Room, Booking.room_id == Room.id, isouter=True
+        )
+        async with async_session_maker() as sessesion:
+            result = await sessesion.execute(query)
+            return result.all()

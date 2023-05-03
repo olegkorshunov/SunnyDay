@@ -15,3 +15,7 @@ class SBooking(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class SBookingWithImage(SBooking):
+    image_id: int

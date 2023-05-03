@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 
 from src.auth.dependencies import get_current_user
 from src.auth.models import UserAccount
-from src.booking.dao import BookingDao
-from src.booking.schemas import SBooking
+from src.booking.dao import DaoBooking
+from src.booking.schemas import SBooking, SBookingWithImage
 from src.exceptions import HttpException
 
 router = APIRouter(
@@ -14,9 +14,10 @@ router = APIRouter(
 )
 
 
-@router.get(path="", response_model=list[SBooking])
+@router.get(path="", response_model=list[SBookingWithImage])
 async def get_bookings(user: UserAccount = Depends(get_current_user)):
-    return await BookingDao.find_all(user_account_id=user.id)
+    res = await DaoBooking.get_booking_with_image(user_account_id=user.id)
+    return res
 
 
 @router.post(path="", response_model=SBooking)
@@ -26,7 +27,7 @@ async def add_booking(
     date_to: date,
     user: UserAccount = Depends(get_current_user),
 ):
-    booking = await BookingDao.add(user.id, room_id, date_from, date_to)
+    booking = await DaoBooking.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise HttpException.RoomCanNotBeBooked
     return booking
@@ -34,4 +35,4 @@ async def add_booking(
 
 @router.delete(path="", response_model=SBooking | None)
 async def delete(room_id: int, user: UserAccount = Depends(get_current_user)):
-    return await BookingDao.delete(room_id=room_id, user_account_id=user.id)
+    return await DaoBooking.delete(room_id=room_id, user_account_id=user.id)
