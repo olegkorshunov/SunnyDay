@@ -43,8 +43,8 @@
                         </div>
                         <div class="flex justify-top flex-col items-center">
                             <!-- Total cost formatiing 12345 -> 12 345 -->
-                            <span class="font-bold text-4xl">{{ room.total_cost }}</span>
-                            <span class="mb-1 text-xl"> {{ booking_length }} per night</span>
+                            <span class="font-bold text-4xl"> Total cost: {{ room.total_cost }}</span>
+                            <!-- <span class="mb-1 text-xl"> {{ booking_length }} per night</span> -->
                             <span class="mb-2">{{ room.price }} per night</span>
                             <!-- POST  without JS :D -->
                             <form action="/pages/successful_booking" method="POST">
