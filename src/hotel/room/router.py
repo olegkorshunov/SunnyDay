@@ -6,6 +6,6 @@ from src.hotel.router import router
 
 
 @router.get("/{hotel_id}/rooms", response_model=list[SUnbookedRooms])
-async def find_all(hotel_id: int, date_from: date, date_to: date):
+async def get_rooms_by_time(hotel_id: int, date_from: date, date_to: date):
     result = await DaoRoom.find_all(hotel_id, date_from, date_to)
     return result

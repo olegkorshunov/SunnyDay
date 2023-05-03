@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=list[SHotelsWithRoomsLeft])
-async def find_all(location: str, date_from: date, date_to: date):
+async def get_hotels_by_location_and_time(location: str, date_from: date, date_to: date):
     result = await DaoHotel.find_all(location, date_from, date_to)
     return result
 

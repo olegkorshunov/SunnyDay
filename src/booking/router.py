@@ -15,12 +15,12 @@ router = APIRouter(
 
 
 @router.get(path="", response_model=list[SBooking])
-async def get(user: UserAccount = Depends(get_current_user)):
+async def get_bookings(user: UserAccount = Depends(get_current_user)):
     return await BookingDao.find_all(user_account_id=user.id)
 
 
 @router.post(path="", response_model=SBooking)
-async def add(
+async def add_booking(
     room_id: int,
     date_from: date,
     date_to: date,
