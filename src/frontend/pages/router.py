@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from src.booking.router import add_booking, get_bookings
+from src.booking.router import add_booking, get_bookings, delete_booking_by_id
 from src.hotel.room.router import get_rooms_by_time
 from src.hotel.router import get_hotel_by_id, get_hotels_by_location_and_time
 from src.utils import format_number_thousand_separator, get_month_days
@@ -15,6 +15,11 @@ router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="src/frontend/templates")
+
+
+@router.get("", response_class=HTMLResponse)
+async def main_page(request: Request):
+    return templates.TemplateResponse("auth/login.html", {"request": request})
 
 
 @router.get("/hotels")
@@ -105,6 +110,22 @@ async def get_bookings_page(
         {
             "request": request,
             "bookings": bookings,
+            "format_number_thousand_separator": format_number_thousand_separator,
+        },
+    )
+
+
+# Booking
+@router.delete("/bookings", response_class=HTMLResponse)
+async def del_booking_by_id(
+    request: Request,
+    _=Depends(delete_booking_by_id),
+):
+    return templates.TemplateResponse(
+        "bookings/bookings.html",
+        {
+            "request": request,
+            "bookings": Depends(get_bookings),
             "format_number_thousand_separator": format_number_thousand_separator,
         },
     )
