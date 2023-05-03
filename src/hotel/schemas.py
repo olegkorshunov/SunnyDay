@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Shotel(BaseModel):
+class SHotel(BaseModel):
     id: int
     name: str
     location: str
@@ -13,7 +13,7 @@ class Shotel(BaseModel):
         orm_mode = True
 
 
-class SHotelsWithRoomsLeft(Shotel):
+class SHotelsWithRoomsLeft(SHotel):
     rooms_left: int  # number of available rooms
 
     class Config:

@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter
 
 from src.hotel.dao import DaoHotel
-from src.hotel.schemas import Shotel, SHotelsWithRoomsLeft
+from src.hotel.schemas import SHotel, SHotelsWithRoomsLeft
 
 router = APIRouter(
     prefix="/hotels",
@@ -18,6 +18,6 @@ async def get_hotels_by_location_and_time(location: str, date_from: date, date_t
     return result
 
 
-@router.get("id/{hotel_id}", response_model=Optional[Shotel])
+@router.get("id/{hotel_id}", response_model=Optional[SHotel])
 async def get_hotel_by_id(hotel_id: int):
     return await DaoHotel.find_one_or_none(id=hotel_id)
