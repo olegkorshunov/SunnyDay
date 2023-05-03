@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from sqlalchemy import func, insert, select
+from sqlalchemy import delete, func, insert, select
 
 from src.booking.models import Booking
 from src.dao.daobase import DaoBase
@@ -91,3 +91,15 @@ class DaoBooking(DaoBase[Booking]):
         async with async_session_maker() as sessesion:
             result = await sessesion.execute(query)
             return result.all()
+
+    @classmethod
+    async def delete_booking_by_id(cls, booking_id: int, user_account_id: int):
+        stmt = (
+            delete(Booking)
+            .where((Booking.id == booking_id) & (Booking.user_account_id == user_account_id))
+            .returning(Booking)
+        )
+        async with async_session_maker() as sessesion:
+            booking = await sessesion.scalar(stmt)
+            await sessesion.commit()
+            return booking

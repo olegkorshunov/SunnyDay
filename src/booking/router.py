@@ -9,7 +9,7 @@ from src.booking.schemas import SBooking, SBookingWithImage
 from src.exceptions import HttpException
 
 router = APIRouter(
-    prefix="/boockings",
+    prefix="/bookings",
     tags=["Bookings"],
 )
 
@@ -34,5 +34,5 @@ async def add_booking(
 
 
 @router.delete(path="", response_model=SBooking | None)
-async def delete(room_id: int, user: UserAccount = Depends(get_current_user)):
-    return await DaoBooking.delete(room_id=room_id, user_account_id=user.id)
+async def delete_booking_by_id(booking_id: int, user: UserAccount = Depends(get_current_user)):
+    await DaoBooking.delete_booking_by_id(booking_id=booking_id, user_account_id=user.id)
