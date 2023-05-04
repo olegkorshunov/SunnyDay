@@ -1,18 +1,14 @@
 {% extends "base.html" %} {% block head %}
 <script>
-  async function loginUser() {
-    const url = "http://127.0.0.1:8000/bookings";
-    const bookingId = document.getElementById("bookingId").value;
-
+  async function addBook(room_id, date_from, date_to) {
+    const url = `http://127.0.0.1:8000/pages/hotels/add_booking?room_id=${room_id}&date_from=${date_from}&date_to=${date_to}`;
     await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email, password: password }),
     }).then((response) => {
       if (response.status === 200) {
-        window.location.href = "/pages/bookings";
+        alert("Success!");
       } else {
-        wrongCredentialsSpan.textContent = "Incorrect email or password";
+        alert("Oooops!");
       }
     });
   }
@@ -51,8 +47,7 @@
           >
           <!-- <span class="mb-1 text-xl"> {{ booking_length }} per night</span> -->
           <span class="mb-2">{{ room.price }} per night</span>
-          <!-- POST  without JS :D -->
-          <form action="/pages/successful_booking" method="POST">
+          <form>
             <div class="flex flex-col items-center">
               <span>From {{ date_from_formatted }}</span>
               <span class="mb-5">to {{ date_to_formatted }}</span>
@@ -77,6 +72,7 @@
                 readonly="readonly"
               />
               <button
+                onclick="addBook('{{room.id|string}}','{{ date_from|string }}','{{ date_to|string }}')"
                 type="submit"
                 class="text-lg bg-yellow-400 px-3 py-1 rounded-3xl mb-3"
               >
