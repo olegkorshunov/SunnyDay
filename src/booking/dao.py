@@ -85,12 +85,14 @@ class DaoBooking(DaoBase[Booking]):
             ON b.room_id = r.id
         """
 
-        query = select(Booking.__table__.columns, Room.image_id.label("image_id")).join(
-            Room, Booking.room_id == Room.id, isouter=True
+        query = (
+            select(Booking.__table__.columns, Room.image_id.label("image_id"))
+            .join(Room, Booking.room_id == Room.id, isouter=True)
+            .where(Booking.user_account_id == user_account_id)
         )
         async with async_session_maker() as sessesion:
             result = await sessesion.execute(query)
-            return result.all()
+            return result.mappings().all()
 
     @classmethod
     async def delete_booking_by_id(cls, booking_id: int, user_account_id: int):

@@ -121,11 +121,4 @@ async def del_booking_by_id(
     request: Request,
     _=Depends(delete_booking_by_id),
 ):
-    return templates.TemplateResponse(
-        "bookings/bookings.html",
-        {
-            "request": request,
-            "bookings": Depends(get_bookings),
-            "format_number_thousand_separator": format_number_thousand_separator,
-        },
-    )
+    return 200
