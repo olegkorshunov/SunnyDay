@@ -35,8 +35,8 @@ class DaoRoom(DaoBase[Room]):
         SELECT hr.*,
             br.*,
             Date_part('day', '2024-08-15' :: timestamp - '2024-08-15' :: timestamp) *
-            hr.price                 AS total_cost,
-            hr.quantity - br.booking AS rooms_left
+            hr.price                              AS total_cost,
+            Coalesce(hr.quantity - br.booking, 0) AS rooms_left
         FROM   hotel_rooms AS hr
             left join booking_rooms AS br
                     ON br.room_id = hr.id
@@ -58,7 +58,7 @@ class DaoRoom(DaoBase[Room]):
                 hotel_rooms,
                 booking_rooms,
                 (func.Date_part("day", date_to - date_from) * hotel_rooms.c.price).label("total_cost"),
-                (hotel_rooms.c.quantity - booking_rooms.c.booking).label("rooms_left"),
+                (func.coalesce(hotel_rooms.c.quantity - booking_rooms.c.booking, 0)).label("rooms_left"),
             )
             .join(booking_rooms, booking_rooms.c.room_id == hotel_rooms.c.id, isouter=True)
             .where(hotel_rooms.c.quantity - func.coalesce(booking_rooms.c.booking, 0) > 0)
