@@ -19,14 +19,14 @@ class DaoRoom(DaoBase[Room]):
         WITH hotel_rooms
             AS (SELECT *
                 FROM   room
-                WHERE  room.hotel_id = 1),
+                WHERE  room.hotel_id = 5),
             booking_rooms
             AS (SELECT b.room_id                     AS room_id,
                         Coalesce(Count(b.room_id), 0) AS booking
                 FROM   hotel_rooms AS hr
                         left join booking AS b
                             ON hr.id = b.room_id
-                WHERE  hr.hotel_id = 1
+                WHERE  hr.hotel_id = 5
                         AND ( '2024-08-15' <= date_from
                             AND date_from <= '2026-12-20' )
                         OR ( '2024-08-15' <= date_to
@@ -34,13 +34,13 @@ class DaoRoom(DaoBase[Room]):
                 GROUP  BY b.room_id)
         SELECT hr.*,
             br.*,
-            Date_part('day', '2026-12-20' :: timestamp - '2024-08-15' ::
-            timestamp) * hr.price    AS total_cost,
+            Date_part('day', '2024-08-15' :: timestamp - '2024-08-15' :: timestamp) *
+            hr.price                 AS total_cost,
             hr.quantity - br.booking AS rooms_left
         FROM   hotel_rooms AS hr
             left join booking_rooms AS br
                     ON br.room_id = hr.id
-        WHERE  hr.quantity - br.booking > 0
+        WHERE  hr.quantity - Coalesce(br.booking, 0) > 0
         """
         hotel_rooms = select(Room).where(Room.hotel_id == hotel_id).cte("hotel_rooms")
         booking_rooms = (
@@ -61,7 +61,7 @@ class DaoRoom(DaoBase[Room]):
                 (hotel_rooms.c.quantity - booking_rooms.c.booking).label("rooms_left"),
             )
             .join(booking_rooms, booking_rooms.c.room_id == hotel_rooms.c.id, isouter=True)
-            .where(hotel_rooms.c.quantity - booking_rooms.c.booking > 0)
+            .where(hotel_rooms.c.quantity - func.coalesce(booking_rooms.c.booking, 0) > 0)
         )
         async with async_session_maker() as ssesion:
             result = await ssesion.execute(query)
