@@ -1,17 +1,32 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 
 import src.models  # noqa
 from src.auth.router import router as auth_router
 from src.booking.router import router as booking_router
+from src.config import settings
 from src.frontend.pages.router import router as router_pages
 from src.hotel.room.router import router as room_router  # noqa
 from src.hotel.router import router as hotel_router
 from src.images.router import router as image_router
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    redis = aioredis.from_url(settings.REDIS_URL, encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
+    yield
+    # SHUTDOWN
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 app.mount(path="/static", app=StaticFiles(directory="src/frontend/static"), name="static")
