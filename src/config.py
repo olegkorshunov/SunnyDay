@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, EmailStr
 
 
 class Settings(BaseSettings):
@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     REDIS_URL: str
 
     SMTP_HOST: str
-    SMTP_PORT: str
-    SMPT_USER: str
+    SMTP_PORT: int
+    SMTP_USER: EmailStr
     SMTP_PASS: str
 
     @property
@@ -27,3 +27,5 @@ class Settings(BaseSettings):
 
 
 settings = Settings()  # type: ignore
+
+print(settings.SMTP_HOST, settings.SMTP_PORT, settings.SMTP_USER, settings.SMTP_PASS)
