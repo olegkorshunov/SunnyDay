@@ -6,11 +6,13 @@ import src.models as m
 class AdminUser(ModelView, model=m.UserAccount):
     column_list = [m.UserAccount.id, m.UserAccount.email] + [m.UserAccount.booking]
     column_details_exclude_list = [m.UserAccount.hashed_password]
+    # TODO: add roles: [user,admin]
+    # TODO: investigate how to fix hash password
     name = "UserAccount"
     name_plural = "UserAccounts"
     icon = "fa-solid fa-user"
 
-    can_create = True
+    can_create = False
     can_edit = False
     can_delete = False
     can_view_details = True

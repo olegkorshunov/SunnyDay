@@ -16,5 +16,7 @@ class UserAccount(Base):
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     booking: Mapped[list["Booking"]] = relationship(back_populates="user_account")
 
+    # TODO: add roles: [user,admin] for admin panel, and in the future comments and stars
+
     def __repr__(self) -> str:
         return f"{self.email}"
