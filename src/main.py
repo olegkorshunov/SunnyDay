@@ -10,15 +10,15 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 
 import src.models  # noqa
-from src.admin.view import AdminBooking, AdminUser, AdminHotel, AdminRoom
+from src.admin.auth import authentication_backend
+from src.admin.view import AdminBooking, AdminHotel, AdminRoom, AdminUser
 from src.auth.router import router as auth_router
 from src.booking.router import router as booking_router
 from src.config import settings
 from src.database import engine
 from src.frontend.pages.router import router as router_pages
-from src.hotel.router import router as hotel_router
-
 from src.hotel.room.router import router as room_router  # noqa
+from src.hotel.router import router as hotel_router
 from src.images.router import router as image_router
 
 
@@ -61,12 +61,13 @@ app.add_middleware(
     ],
 )
 
-admin = Admin(app, engine)
+admin = Admin(app=app, engine=engine, authentication_backend=authentication_backend)
 
 admin.add_view(AdminUser)
 admin.add_view(AdminBooking)
 admin.add_view(AdminHotel)
 admin.add_view(AdminRoom)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
