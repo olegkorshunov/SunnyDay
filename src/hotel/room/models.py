@@ -21,4 +21,7 @@ class Room(Base):
     hotel_id: Mapped[int] = mapped_column(ForeignKey("hotel.id"))
     image_id: Mapped[int] = mapped_column(Integer)
     hotel: Mapped["Hotel"] = relationship(back_populates="room")
-    booking: Mapped["Booking"] = relationship(back_populates="room")
+    booking: Mapped[list["Booking"]] = relationship(back_populates="room")
+
+    def __repr__(self) -> str:
+        return f"{self.id}"

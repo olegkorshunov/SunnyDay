@@ -23,3 +23,6 @@ class Booking(Base):
     total_days: Mapped[int] = mapped_column(Integer, Computed("date_to - date_from"))
     room: Mapped["Room"] = relationship(back_populates="booking")
     user_account: Mapped["UserAccount"] = relationship(back_populates="booking")
+
+    def __repr__(self) -> str:
+        return f"{self.id}"
