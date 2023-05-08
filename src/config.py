@@ -27,5 +27,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()  # type: ignore
-
-print(settings.SMTP_HOST, settings.SMTP_PORT, settings.SMTP_USER, settings.SMTP_PASS)
