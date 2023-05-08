@@ -7,19 +7,24 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from sqladmin import Admin
 
 import src.models  # noqa
+from src.admin.view import AdminBooking, AdminUser, AdminHotel, AdminRoom
 from src.auth.router import router as auth_router
 from src.booking.router import router as booking_router
 from src.config import settings
+from src.database import engine
 from src.frontend.pages.router import router as router_pages
-from src.hotel.room.router import router as room_router  # noqa
 from src.hotel.router import router as hotel_router
+
+from src.hotel.room.router import router as room_router  # noqa
 from src.images.router import router as image_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # STARTUP
     redis = aioredis.from_url(settings.REDIS_URL, encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="cache")
     yield
@@ -55,6 +60,13 @@ app.add_middleware(
         "Authorization",
     ],
 )
+
+admin = Admin(app, engine)
+
+admin.add_view(AdminUser)
+admin.add_view(AdminBooking)
+admin.add_view(AdminHotel)
+admin.add_view(AdminRoom)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
