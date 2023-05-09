@@ -5,9 +5,9 @@ docker compose build
 docker compose up
 ```
 ```
+http://localhost:8000/docs - docs
 http://localhost:8000/pages - frontend
 http://localhost:8000/admin - admin panel
-http://localhost:8000/docs - docs
 http://localhost:5555/ - flower
 ```
 
