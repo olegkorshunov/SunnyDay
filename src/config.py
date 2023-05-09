@@ -11,7 +11,8 @@ class Settings(BaseSettings):
     SECRET_KEY_jwt: str
     ALGORITHM: str
 
-    REDIS_URL: str
+    REDIS_HOST: str
+    REDIS_PORT: int
 
     SMTP_HOST: str
     SMTP_PORT: int

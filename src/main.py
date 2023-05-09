@@ -25,7 +25,10 @@ from src.images.router import router as image_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # STARTUP
-    redis = aioredis.from_url(settings.REDIS_URL, encoding="utf8", decode_responses=True)
+
+    redis = aioredis.from_url(
+        f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8", decode_responses=True
+    )
     FastAPICache.init(RedisBackend(redis), prefix="cache")
     yield
     # SHUTDOWN
