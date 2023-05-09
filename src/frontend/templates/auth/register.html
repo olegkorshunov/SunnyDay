@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block head %}
 <script>
   async function registerUser() {
-    const url = "http://127.0.0.1:8000/auth/register";
+    const url = "http://localhost:8000/auth/register";
     const formData = new FormData();
     formData.append("email", document.getElementById("email").value);
     formData.append("password", document.getElementById("password").value);

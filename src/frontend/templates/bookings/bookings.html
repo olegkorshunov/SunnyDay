@@ -2,7 +2,7 @@
 <script>
   async function deleteBooking(bookings_id) {
     const url =
-      "http://127.0.0.1:8000/bookings?booking_id=" + bookings_id.toString();
+      "http://localhost:8000/bookings?booking_id=" + bookings_id.toString();
 
     await fetch(url, {
       method: "DELETE",

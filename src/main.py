@@ -20,6 +20,7 @@ from src.frontend.pages.router import router as router_pages
 from src.hotel.room.router import router as room_router  # noqa
 from src.hotel.router import router as hotel_router
 from src.images.router import router as image_router
+from src.database import insert_data
 
 
 @asynccontextmanager
@@ -30,6 +31,7 @@ async def lifespan(app: FastAPI):
         f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8", decode_responses=True
     )
     FastAPICache.init(RedisBackend(redis), prefix="cache")
+    await insert_data()
     yield
     # SHUTDOWN
 

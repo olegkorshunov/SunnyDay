@@ -6,8 +6,13 @@ services:
     container_name: sunnyday_db
     env_file:
       - .env-non-dev
+    # volumes:
+    #   - postgresql_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
     ports:
       - 5432:5432
+
 
   redis:
     image: redis:7
@@ -26,7 +31,7 @@ services:
       - redis
     command: ["/sunnyday/docker_scripts/app.sh"]
     ports:
-      - 8080:8000
+      - 8000:8000
 
   celery:    
     build: 
@@ -57,7 +62,7 @@ services:
     ports:
       - "5050:80"
     depends_on:
-      - db
+      - sunnyday
 
-volumes:
-  postgresql_data:
+# volumes:
+#   postgresql_data:
