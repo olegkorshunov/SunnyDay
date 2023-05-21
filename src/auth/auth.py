@@ -4,9 +4,9 @@ from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
+import src.exceptions as ex
 from src.auth.dao import DaoAuth
 from src.config import settings
-from src.exceptions import HttpException
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -35,4 +35,4 @@ async def authenticate_user(email: EmailStr, password: str):
     if user and verify_password(password, user.hashed_password):
         return user
     else:
-        raise HttpException.IncorrectEmailOrPassword
+        raise ex.IncorrectEmailOrPassword

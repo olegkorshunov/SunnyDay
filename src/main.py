@@ -15,12 +15,11 @@ from src.admin.view import AdminBooking, AdminHotel, AdminRoom, AdminUser
 from src.auth.router import router as auth_router
 from src.booking.router import router as booking_router
 from src.config import settings
-from src.database import engine
+from src.database import engine, insert_data
 from src.frontend.pages.router import router as router_pages
 from src.hotel.room.router import router as room_router  # noqa
 from src.hotel.router import router as hotel_router
 from src.images.router import router as image_router
-from src.database import insert_data
 
 
 @asynccontextmanager

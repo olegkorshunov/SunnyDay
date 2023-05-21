@@ -38,6 +38,9 @@ celery = "^5.2.7"
 pillow = "^9.5.0"
 sqladmin = "^0.10.3"
 gunicorn = "^20.1.0"
+pytest = "^7.3.1"
+sqlalchemy-utils = "^0.41.1"
+psycopg2 = "^2.9.6"
 
 
 [tool.poetry.group.dev.dependencies]

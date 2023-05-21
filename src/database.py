@@ -1,16 +1,25 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from src.config import settings
+
+import src.exceptions as ex
 
 
 class Base(DeclarativeBase):
     pass
 
 
-engine = create_async_engine(settings.DATABASE_URL)
+engine = create_async_engine(settings.DATABASE_URL_ASYNC)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
+if settings.MODE == "TEST":
+    if database_exists(settings.DATABASE_URL_SYNC):
+        raise ex.DBAlredyExist("Test")
+else:
+    create_database(settings.DATABASE_URL_SYNC)
 
 
 async def insert_data():

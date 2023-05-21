@@ -4,4 +4,6 @@ extend-ignore =
     # See https://github.com/PyCQA/pycodestyle/issues/373
     E203,
 per-file-ignores =
-    src/models/__init__.py:F401
+    src/models/__init__.py:F401,
+    src/exceptions/__init__.py:F401,
+    src/exceptions/__init__.py:F403

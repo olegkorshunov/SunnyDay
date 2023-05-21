@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Response
 
+import src.exceptions as ex
 from src.auth.auth import authenticate_user, create_access_token, get_password_hash
 from src.auth.constants import access_token
 from src.auth.dao import DaoAuth
 from src.auth.dependencies import get_current_user
 from src.auth.schemas import SUserInfo, SUserLogin, SUserRegister
-from src.exceptions import HttpException
 
 router = APIRouter(
     prefix="/auth",
@@ -17,7 +17,7 @@ router = APIRouter(
 async def register_user(user_data: SUserRegister):
     existig_user = await DaoAuth.find_one_or_none(email=user_data.email)
     if existig_user:
-        raise HttpException.UserAlredyExis
+        raise ex.UserAlredyExis
     hashed_password = get_password_hash(password=user_data.password)
     await DaoAuth.insert(email=user_data.email, hashed_password=hashed_password)
 
