@@ -1,5 +1,7 @@
 # SunnyDay
-Use docker
+How to up service: 
+1. Create an `.env` file using the `.example.env`
+2. Use docker
 ```
 docker compose build
 docker compose up
