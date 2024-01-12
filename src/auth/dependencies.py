@@ -23,7 +23,7 @@ async def get_current_user(access_token_jwt: str = Depends(get_access_token)):
         raise ex.IncorrectTokenFormat
     expire = payload.get("exp")
     if not expire or int(expire) < datetime.utcnow().timestamp():
-        raise ex.AuthTokenExpier
+        raise ex.AuthTokenExpire
     user_id = payload.get("sub")
     if not user_id:
         raise ex.UserDataNotFound
